@@ -32,10 +32,10 @@ export function Leaderboard({ totalCO2 }: Props) {
         {rows.map((r, i) => (
           <li
             key={r.name}
-            className={`flex items-center gap-4 rounded-2xl border p-4 text-white backdrop-blur-md transition ${
+            className={`flex items-center gap-4 rounded-2xl border p-4 backdrop-blur-md transition ${
               r.you
-                ? "border-[#7CE0A8] bg-[#7CE0A8]/20 ring-1 ring-[#7CE0A8]/50 shadow-[0_0_16px_rgba(124,224,168,0.12)]"
-                : "border-white/10 bg-black/40"
+                ? "border-[#7CE0A8] bg-[#0F1A14] text-white ring-1 ring-[#7CE0A8]/50 shadow-[0_0_16px_rgba(124,224,168,0.12)]"
+                : "border-white/10 bg-black/40 text-white"
             }`}
           >
             <div className="w-7 text-center text-sm font-semibold tabular-nums text-white/70">
