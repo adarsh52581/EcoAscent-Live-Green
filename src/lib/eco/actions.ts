@@ -1,4 +1,4 @@
-import { Car, Plane, Bus, Train, Beef, Drumstick, Salad, Bike, Trees, PlaneOff, type LucideIcon } from "lucide-react";
+import { Car, Plane, Bus, Train, Beef, Drumstick, Salad, Bike, Trees, Leaf, type LucideIcon } from "lucide-react";
 
 export type Category = "transit" | "food" | "offset";
 
@@ -20,7 +20,7 @@ export const PRESETS: Preset[] = [
   { id: "vegan", category: "food", label: "Vegan meal", co2: 0.5, icon: Salad },
   { id: "cycle", category: "offset", label: "Cycled instead", co2: -2, icon: Bike },
   { id: "tree", category: "offset", label: "Planted a tree", co2: -20, icon: Trees },
-  { id: "skipflight", category: "offset", label: "Skipped a flight", co2: -50, icon: PlaneOff },
+  { id: "skipflight", category: "offset", label: "Skipped a flight", co2: -50, icon: Leaf },
 ];
 
 export const CATEGORY_META: Record<Category, { label: string; tagline: string }> = {
