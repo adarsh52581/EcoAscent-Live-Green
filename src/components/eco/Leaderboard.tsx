@@ -18,12 +18,12 @@ export function Leaderboard({ totalCO2 }: Props) {
 
   return (
     <div className="mx-auto w-[min(92vw,640px)] space-y-5 pb-32 pt-6">
-      <header className="rounded-3xl border border-white/10 bg-black/40 p-6 text-white backdrop-blur-md">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/60">
+      <header className="rounded-3xl border border-white/10 bg-black/50 p-6 text-white backdrop-blur-md">
+        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/85">
           <Trophy className="h-3.5 w-3.5" /> Neighborhood standings
         </div>
         <h2 className="mt-1 text-2xl font-semibold">Lowest footprint wins.</h2>
-        <p className="mt-1 text-sm text-white/60">
+        <p className="mt-1 text-sm text-white/80">
           Your score updates the moment you log an action.
         </p>
       </header>
