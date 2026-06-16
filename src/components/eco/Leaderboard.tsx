@@ -34,7 +34,7 @@ export function Leaderboard({ totalCO2 }: Props) {
             key={r.name}
             className={`flex items-center gap-4 rounded-2xl border p-4 text-white backdrop-blur-md transition ${
               r.you
-                ? "border-[#7CE0A8] bg-[#7CE0A8]/10 ring-1 ring-[#7CE0A8]/40"
+                ? "border-[#7CE0A8] bg-[#7CE0A8]/20 ring-1 ring-[#7CE0A8]/50 shadow-[0_0_16px_rgba(124,224,168,0.12)]"
                 : "border-white/10 bg-black/40"
             }`}
           >
