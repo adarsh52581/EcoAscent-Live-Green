@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "EcoAscent: Live Green" },
+      { name: "description", content: "A gamified carbon footprint awareness platform that transforms your daily emissions and green offsets into an interactive 2D 'Living World.' Watch your virtual" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "EcoAscent: Live Green" },
+      { property: "og:description", content: "A gamified carbon footprint awareness platform that transforms your daily emissions and green offsets into an interactive 2D 'Living World.' Watch your virtual" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "EcoAscent: Live Green" },
+      { name: "twitter:description", content: "A gamified carbon footprint awareness platform that transforms your daily emissions and green offsets into an interactive 2D 'Living World.' Watch your virtual" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5bcwz1GkgNblmu2c1DpuCBM2Ayp1/social-images/social-1781700933210-social-image.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5bcwz1GkgNblmu2c1DpuCBM2Ayp1/social-images/social-1781700933210-social-image.webp" },
     ],
     links: [
       {
