@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { worldState } from "@/lib/eco/actions";
+import { worldState, type WorldState } from "@/lib/eco/actions";
 
 type Props = { totalCO2: number };
+
+const SCENE_DESCRIPTIONS: Record<WorldState, string> = {
+  pristine: "A lush green landscape with bright sun, healthy trees, and drifting pollen.",
+  moderate: "A pale-skied landscape with thinning trees and a faded sun.",
+  strained: "A dusty horizon with stumps replacing many trees and a heavy haze.",
+  critical: "A scorched red sky over barren hills, only stumps remain, smoke billows upward.",
+};
 
 export function LivingWorld({ totalCO2 }: Props) {
   const state = worldState(totalCO2);
@@ -26,9 +33,14 @@ export function LivingWorld({ totalCO2 }: Props) {
   });
 
   return (
-    <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden">
+    <div
+      ref={ref}
+      role="img"
+      aria-label={`Living world scene — ${state}. ${SCENE_DESCRIPTIONS[state]}`}
+      className="fixed inset-0 -z-10 overflow-hidden"
+    >
       <Scene visible={state === "pristine"} kind="pristine" tx={tx} />
-      <Scene visible={state === "moderate"} kind="moderate" tx={tx} />
+      <Scene visible={state === "moderate" || state === "strained"} kind="moderate" tx={tx} />
       <Scene visible={state === "critical"} kind="critical" tx={tx} />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import type { Category } from "./actions";
 
 export type Action = {
@@ -10,6 +10,7 @@ export type Action = {
 };
 
 const KEY = "ecoascent:v1";
+const SEEDED_KEY = "ecoascent:seeded";
 
 type State = { actions: Action[] };
 
@@ -34,12 +35,42 @@ function write(state: State) {
   }
 }
 
+/** Seed data shown to first-time visitors so the Living World immediately reacts. */
+const SEED_ACTIONS: Omit<Action, "id" | "loggedAt">[] = [
+  { category: "transit", label: "Car commute", co2: 6 },
+  { category: "food", label: "Beef meal", co2: 7 },
+  { category: "offset", label: "Cycled instead", co2: -2 },
+];
+
+/**
+ * React hook that owns the user's eco-action log.
+ * Persists to localStorage, recovers from corrupt JSON, seeds first-time
+ * visitors with a few sample actions, and memoises derived totals.
+ */
 export function useEcoState() {
   const [actions, setActions] = useState<Action[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setActions(read().actions);
+    const existing = read().actions;
+    const alreadySeeded =
+      typeof window !== "undefined" && window.localStorage.getItem(SEEDED_KEY) === "1";
+    if (existing.length === 0 && !alreadySeeded) {
+      const now = Date.now();
+      const seeded: Action[] = SEED_ACTIONS.map((a, i) => ({
+        ...a,
+        id: `seed-${i}`,
+        loggedAt: now - (i + 1) * 3600_000,
+      }));
+      setActions(seeded);
+      try {
+        window.localStorage.setItem(SEEDED_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+    } else {
+      setActions(existing);
+    }
     setHydrated(true);
   }, []);
 
@@ -67,11 +98,18 @@ export function useEcoState() {
 
   const clearAll = useCallback(() => setActions([]), []);
 
-  const totalCO2 = actions.reduce((sum, a) => sum + a.co2, 0);
+  const totalCO2 = useMemo(
+    () => actions.reduce((sum, a) => sum + a.co2, 0),
+    [actions],
+  );
 
   return { actions, addAction, removeAction, clearAll, totalCO2, hydrated };
 }
 
+/**
+ * Compact human-readable "time ago" string for a past timestamp.
+ * Resolution: just-now → minutes → hours → days.
+ */
 export function formatRelative(ts: number): string {
   const diff = Date.now() - ts;
   const m = Math.floor(diff / 60000);
