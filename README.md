@@ -9,6 +9,46 @@ strains, or chokes in response to the actions they log.
 
 ---
 
+## Chosen vertical
+
+**Sustainability & Climate Action.** Persona: the *climate-curious individual* —
+someone who cares about their footprint but bounces off spreadsheet-style
+trackers. EcoAscent is the smart, dynamic assistant for that persona: it takes
+the day's logged choices as context and responds with a living visual world
+plus a human-voiced headline ("Your world is breathing easy" → "Your world is
+choking. Time to act."). The decision logic — which scene, which copy, which
+leaderboard rank — is derived from the user's running CO₂ context, not
+hard-coded screens.
+
+## Approach & logic
+
+1. **Context** = the user's `Action[]` history in `localStorage`.
+2. **Reasoner** = pure function `worldState(totalCO2)` → `pristine | moderate | critical` (thresholds 20 kg / 80 kg).
+3. **Response** = three layers driven off that single state:
+   - Visual: cross-fading SVG palette + smoke/pollen intensity in `LivingWorld`.
+   - Verbal: headline + health bar color in `WorldMeter`.
+   - Social: rank position in the neighborhood `Leaderboard`.
+4. **Feedback latency** is sub-second so the cause→effect link is felt, not read.
+
+## How it works
+
+- Open the app → `useEcoState` hydrates actions from `localStorage`.
+- Tap a preset chip (or add a custom note) in **Log** → action is prepended, totals recompute, `worldState()` re-derives, every consumer re-renders.
+- Switch to **World** to see the scene shift; **Board** shows where you rank.
+- Everything is client-only — no sign-up, no network calls, works offline.
+
+## Assumptions made
+
+- CO₂ values are illustrative averages (e.g. short flight ≈ 90 kg) — the goal
+  is behavioral feedback, not scientific-grade accounting.
+- A single device = a single user; multi-device sync is out of scope.
+- The neighborhood leaderboard uses representative seed peers so a brand-new
+  user still gets the social-comparison signal on first open.
+- Modern evergreen browser with `localStorage` available; SSR renders an empty
+  state and hydrates on the client.
+
+---
+
 ## Why this exists
 
 Climate-curious people already know "flying is bad" — they haven't internalized scale.
