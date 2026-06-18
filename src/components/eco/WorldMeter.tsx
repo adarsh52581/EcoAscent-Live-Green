@@ -1,18 +1,20 @@
-import { worldState } from "@/lib/eco/actions";
+import { memo } from "react";
+import { worldState, worldHeadline } from "@/lib/eco/actions";
 
 type Props = { totalCO2: number; count: number };
 
-export function WorldMeter({ totalCO2, count }: Props) {
+function WorldMeterImpl({ totalCO2, count }: Props) {
   const state = worldState(totalCO2);
   const health = Math.max(0, Math.min(100, 100 - totalCO2));
-  const headline =
-    state === "pristine"
-      ? "Your world is breathing easy."
-      : state === "moderate"
-        ? "The air is getting heavier."
-        : "Your world is choking. Time to act.";
+  const headline = worldHeadline(state);
   const bar =
-    state === "pristine" ? "#7CE0A8" : state === "moderate" ? "#F2C265" : "#F2705B";
+    state === "pristine"
+      ? "#7CE0A8"
+      : state === "moderate"
+        ? "#F2C265"
+        : state === "strained"
+          ? "#F2945B"
+          : "#F2705B";
 
   return (
     <div className="mx-auto mt-6 w-[min(92vw,560px)] rounded-3xl border border-white/10 bg-black/40 p-5 text-white backdrop-blur-md shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]">
@@ -31,7 +33,15 @@ export function WorldMeter({ totalCO2, count }: Props) {
           <div className="text-[11px] text-white/50">{count} actions logged</div>
         </div>
       </div>
-      <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/10">
+      <div
+        role="progressbar"
+        aria-label="World health"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(health)}
+        aria-valuetext={`${Math.round(health)}% — ${headline}`}
+        className="mt-4 h-2 w-full overflow-hidden rounded-full bg-white/10"
+      >
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{ width: `${health}%`, background: bar }}
@@ -45,3 +55,5 @@ export function WorldMeter({ totalCO2, count }: Props) {
     </div>
   );
 }
+
+export const WorldMeter = memo(WorldMeterImpl);

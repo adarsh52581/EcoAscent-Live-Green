@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Trophy } from "lucide-react";
 
 type Props = { totalCO2: number };
@@ -10,7 +11,7 @@ const GROUPS = [
   { name: "Pine Lodge", score: 102 },
 ];
 
-export function Leaderboard({ totalCO2 }: Props) {
+function LeaderboardImpl({ totalCO2 }: Props) {
   const rows = [
     ...GROUPS.map((g) => ({ ...g, you: false })),
     { name: "Your House", score: Number(totalCO2.toFixed(1)), you: true },
@@ -29,41 +30,62 @@ export function Leaderboard({ totalCO2 }: Props) {
         </p>
       </header>
 
-      <ol className="space-y-2">
-        {rows.map((r, i) => (
-          <li
-            key={r.name}
-            className={`flex items-center gap-4 rounded-2xl border p-4 backdrop-blur-md transition ${
-              r.you
-                ? "border-[#7CE0A8] bg-[#0F1A14] text-white ring-1 ring-[#7CE0A8]/50 shadow-[0_0_16px_rgba(124,224,168,0.12)]"
-                : "border-white/10 bg-black/40 text-white"
-            }`}
-          >
-            <div className="w-7 text-center text-sm font-semibold tabular-nums text-white/70">
-              #{i + 1}
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-base font-medium">{r.name}</span>
-                {r.you && (
-                  <span className="rounded-full bg-[#7CE0A8] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#0F1A24]">
-                    You
-                  </span>
-                )}
-              </div>
-              <div className="text-[11px] text-white/40">
-                {i === 0 ? "Leading the pack" : i === rows.length - 1 ? "Heaviest footprint" : "Mid-pack"}
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-lg font-semibold tabular-nums">{r.score.toFixed(1)}</div>
-              <div className="text-[10px] uppercase tracking-wider text-white/40">
-                kg CO₂
-              </div>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <table className="w-full border-separate border-spacing-y-2 text-white">
+        <caption className="sr-only">
+          Neighborhood leaderboard sorted by lowest CO₂ footprint first.
+        </caption>
+        <thead className="sr-only">
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">House</th>
+            <th scope="col">CO₂ in kilograms</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr
+              key={r.name}
+              data-testid="leaderboard-row"
+              className={`backdrop-blur-md ${
+                r.you
+                  ? "bg-[#0F1A14] ring-1 ring-[#7CE0A8]/50 shadow-[0_0_16px_rgba(124,224,168,0.12)]"
+                  : "bg-black/40"
+              }`}
+            >
+              <td className="w-12 rounded-l-2xl border-y border-l border-white/10 p-4 text-center text-sm font-semibold tabular-nums text-white/70">
+                #{i + 1}
+              </td>
+              <td className="border-y border-white/10 p-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-base font-medium">{r.name}</span>
+                  {r.you && (
+                    <span className="rounded-full bg-[#7CE0A8] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#0F1A24]">
+                      You
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] text-white/40">
+                  {i === 0
+                    ? "Leading the pack"
+                    : i === rows.length - 1
+                      ? "Heaviest footprint"
+                      : "Mid-pack"}
+                </div>
+              </td>
+              <td className="rounded-r-2xl border-y border-r border-white/10 p-4 text-right">
+                <div className="text-lg font-semibold tabular-nums">
+                  {r.score.toFixed(1)}
+                </div>
+                <div className="text-[10px] uppercase tracking-wider text-white/40">
+                  kg CO₂
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
+
+export const Leaderboard = memo(LeaderboardImpl);

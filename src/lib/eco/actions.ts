@@ -29,8 +29,48 @@ export const CATEGORY_META: Record<Category, { label: string; tagline: string }>
   offset: { label: "Green Offsets", tagline: "Acts that heal the world" },
 };
 
-export function worldState(total: number): "pristine" | "moderate" | "critical" {
-  if (total < 20) return "pristine";
-  if (total < 80) return "moderate";
+/**
+ * CO₂ thresholds (kg) that divide the world into emotional states.
+ * Kept as a single source of truth so UI, tests, and docs stay aligned.
+ */
+export const WORLD_THRESHOLDS = {
+  /** Below this total the world is pristine. */
+  pristine: 20,
+  /** Below this total the world is moderately stressed. */
+  moderate: 60,
+  /** Below this total the world is strained; at or above it becomes critical. */
+  strained: 80,
+} as const;
+
+export type WorldState = "pristine" | "moderate" | "strained" | "critical";
+
+/**
+ * Maps a cumulative CO₂ total (kg) to one of four world states.
+ * Pure function — safe to call in render and easy to unit-test.
+ *
+ * @param total cumulative CO₂ in kilograms (may be negative for net-offsetters)
+ * @returns the world state bucket used by the Living World scene
+ */
+export function worldState(total: number): WorldState {
+  if (total < WORLD_THRESHOLDS.pristine) return "pristine";
+  if (total < WORLD_THRESHOLDS.moderate) return "moderate";
+  if (total < WORLD_THRESHOLDS.strained) return "strained";
   return "critical";
+}
+
+/**
+ * Human-readable headline for a given world state.
+ * Escalates emotionally from calm reassurance to urgent alarm.
+ */
+export function worldHeadline(state: WorldState): string {
+  switch (state) {
+    case "pristine":
+      return "Your world is breathing easy.";
+    case "moderate":
+      return "The air is getting heavier.";
+    case "strained":
+      return "Cracks are forming. Your world is struggling.";
+    case "critical":
+      return "Your world is choking. Time to act.";
+  }
 }

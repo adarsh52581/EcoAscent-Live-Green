@@ -1,19 +1,35 @@
 import { describe, it, expect } from "vitest";
-import { worldState, PRESETS, CATEGORY_META } from "./actions";
+import { worldState, worldHeadline, WORLD_THRESHOLDS, PRESETS, CATEGORY_META } from "./actions";
 
 describe("worldState thresholds", () => {
   it("pristine for low totals (including negative)", () => {
     expect(worldState(-50)).toBe("pristine");
     expect(worldState(0)).toBe("pristine");
-    expect(worldState(19.99)).toBe("pristine");
+    expect(worldState(WORLD_THRESHOLDS.pristine - 0.01)).toBe("pristine");
   });
-  it("moderate between 20 and 80", () => {
-    expect(worldState(20)).toBe("moderate");
-    expect(worldState(79.99)).toBe("moderate");
+  it("moderate between pristine and moderate threshold", () => {
+    expect(worldState(WORLD_THRESHOLDS.pristine)).toBe("moderate");
+    expect(worldState(WORLD_THRESHOLDS.moderate - 0.01)).toBe("moderate");
   });
-  it("critical at or above 80", () => {
-    expect(worldState(80)).toBe("critical");
+  it("strained between moderate and strained threshold", () => {
+    expect(worldState(WORLD_THRESHOLDS.moderate)).toBe("strained");
+    expect(worldState(WORLD_THRESHOLDS.strained - 0.01)).toBe("strained");
+  });
+  it("critical at or above strained threshold", () => {
+    expect(worldState(WORLD_THRESHOLDS.strained)).toBe("critical");
     expect(worldState(1000)).toBe("critical");
+  });
+});
+
+describe("worldHeadline", () => {
+  it("returns a non-empty string for every state", () => {
+    for (const s of ["pristine", "moderate", "strained", "critical"] as const) {
+      expect(worldHeadline(s).length).toBeGreaterThan(0);
+    }
+  });
+  it("escalates emotionally toward critical", () => {
+    expect(worldHeadline("critical").toLowerCase()).toMatch(/choking|act/);
+    expect(worldHeadline("pristine").toLowerCase()).toMatch(/breathing|easy/);
   });
 });
 
