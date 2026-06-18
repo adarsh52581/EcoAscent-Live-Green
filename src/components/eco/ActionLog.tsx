@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 import { CATEGORY_META, PRESETS, type Category } from "@/lib/eco/actions";
 import { formatRelative, type Action } from "@/lib/eco/storage";
@@ -14,6 +14,8 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [custom, setCustom] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const noteId = useId();
+  const errorId = useId();
 
   const presets = PRESETS.filter((p) => p.category === cat);
 
@@ -58,6 +60,8 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
                 setCat(c);
                 setSelected(null);
               }}
+              type="button"
+              aria-pressed={cat === c}
               className={`flex-1 rounded-full px-3 py-2 text-xs font-medium transition ${
                 cat === c
                   ? "bg-[#E8F4FF] text-[#0F1A24]"
@@ -80,6 +84,8 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
               <button
                 key={p.id}
                 onClick={() => setSelected(p.id)}
+                type="button"
+                aria-pressed={active}
                 className={`flex flex-col items-start gap-2 rounded-2xl border p-3 text-left transition ${
                   active
                     ? "border-[#7CE0A8] bg-[#7CE0A8]/10"
@@ -101,26 +107,36 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
 
         {/* Custom label */}
         <div className="mt-4">
-          <label className="text-[11px] uppercase tracking-wider text-white/50">
+          <label
+            htmlFor={noteId}
+            className="text-[11px] uppercase tracking-wider text-white/50"
+          >
             Custom note (optional)
           </label>
           <input
+            id={noteId}
             value={custom}
             onChange={(e) => setCustom(e.target.value)}
             maxLength={80}
             placeholder="e.g. Drove to grandma's"
+            aria-describedby={error ? errorId : undefined}
             className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/30"
           />
         </div>
 
         {error && (
-          <div className="mt-3 rounded-lg border border-[#F2705B]/40 bg-[#F2705B]/10 px-3 py-2 text-xs text-[#FFD4C8]">
+          <div
+            id={errorId}
+            role="alert"
+            className="mt-3 rounded-lg border border-[#F2705B]/40 bg-[#F2705B]/10 px-3 py-2 text-xs text-[#FFD4C8]"
+          >
             {error}
           </div>
         )}
 
         <button
           onClick={submit}
+          type="button"
           className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#E8F4FF] px-5 py-3 text-sm font-semibold text-[#0F1A24] transition hover:bg-white"
         >
           <Plus className="h-4 w-4" /> Log this action
