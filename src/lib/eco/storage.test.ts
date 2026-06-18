@@ -1,8 +1,13 @@
-import { describe, it, expect } from "vitest";
+import { describe, beforeEach, describe as _d, it, expect } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useEcoState, formatRelative } from "./storage";
 
 describe("useEcoState", () => {
+  beforeEach(() => {
+    // Mark as already-seeded so tests start from a clean, empty log.
+    window.localStorage.setItem("ecoascent:seeded", "1");
+  });
+
   it("starts empty", () => {
     const { result } = renderHook(() => useEcoState());
     expect(result.current.actions).toEqual([]);
