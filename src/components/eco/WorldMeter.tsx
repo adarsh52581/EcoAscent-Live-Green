@@ -38,9 +38,9 @@ export function WorldMeter({ totalCO2, count }: Props) {
         />
       </div>
       <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-white/40">
-        <span>Thriving</span>
-        <span>Strained</span>
         <span>Critical</span>
+        <span>Strained</span>
+        <span>Thriving</span>
       </div>
     </div>
   );
