@@ -1,8 +1,17 @@
 import { memo } from "react";
 import { worldState, worldHeadline } from "@/lib/eco/actions";
 
-type Props = { totalCO2: number; count: number };
+type Props = {
+  /** Cumulative CO₂ in kilograms (may be negative for net-offsetters). */
+  totalCO2: number;
+  /** Number of logged actions, shown as a secondary stat. */
+  count: number;
+};
 
+/**
+ * Glass card surfacing the current world state in text + a progress bar.
+ * Memoised because it only depends on `totalCO2` and `count`.
+ */
 function WorldMeterImpl({ totalCO2, count }: Props) {
   const state = worldState(totalCO2);
   const health = Math.max(0, Math.min(100, 100 - totalCO2));

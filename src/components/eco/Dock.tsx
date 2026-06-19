@@ -10,6 +10,7 @@ const ITEMS: { id: View; label: string; Icon: typeof Home }[] = [
   { id: "board", label: "Ranks", Icon: Trophy },
 ];
 
+/** Floating bottom navigation dock that switches between the three main views. */
 export function Dock({ view, onChange }: Props) {
   return (
     <nav
