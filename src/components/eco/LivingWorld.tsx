@@ -32,13 +32,22 @@ export function LivingWorld({ totalCO2 }: Props) {
     transform: `translate3d(${parallax.x * depth}px, ${parallax.y * depth * 0.5}px, 0)`,
   });
 
+  const titleId = "living-world-title";
+  const descId = "living-world-desc";
   return (
-    <div
-      ref={ref}
-      role="img"
-      aria-label={`Living world scene — ${state}. ${SCENE_DESCRIPTIONS[state]}`}
-      className="fixed inset-0 -z-10 overflow-hidden"
-    >
+    <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden">
+      {/* Accessible SVG layer: invisible but exposes <title>/<desc> to AT. */}
+      <svg
+        role="img"
+        aria-labelledby={`${titleId} ${descId}`}
+        width="1"
+        height="1"
+        className="absolute h-px w-px overflow-hidden opacity-0"
+        focusable="false"
+      >
+        <title id={titleId}>{`Living world — ${state}`}</title>
+        <desc id={descId}>{SCENE_DESCRIPTIONS[state]}</desc>
+      </svg>
       <Scene visible={state === "pristine"} kind="pristine" tx={tx} />
       <Scene visible={state === "moderate" || state === "strained"} kind="moderate" tx={tx} />
       <Scene visible={state === "critical"} kind="critical" tx={tx} />
