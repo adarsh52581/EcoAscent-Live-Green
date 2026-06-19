@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useLayoutEffect, useState, useCallback, useMemo } from "react";
 import type { Category } from "./actions";
 
 export type Action = {
@@ -42,37 +42,51 @@ const SEED_ACTIONS: Omit<Action, "id" | "loggedAt">[] = [
   { category: "offset", label: "Cycled instead", co2: -2 },
 ];
 
+function buildSeed(): Action[] {
+  const now = Date.now();
+  return SEED_ACTIONS.map((a, i) => ({
+    ...a,
+    id: `seed-${i}`,
+    loggedAt: now - (i + 1) * 3600_000,
+  }));
+}
+
+/** SSR-safe synchronous resolver: returns existing actions, seed for first-time
+ *  visitors, or [] on the server. Runs in `useState`'s lazy initializer so the
+ *  very first client render already shows a populated world. */
+function resolveInitial(): Action[] {
+  if (typeof window === "undefined") return [];
+  const existing = read().actions;
+  if (existing.length > 0) return existing;
+  const alreadySeeded = window.localStorage.getItem(SEEDED_KEY) === "1";
+  if (alreadySeeded) return [];
+  const seeded = buildSeed();
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify({ actions: seeded }));
+    window.localStorage.setItem(SEEDED_KEY, "1");
+  } catch {
+    /* ignore */
+  }
+  return seeded;
+}
+
 /**
  * React hook that owns the user's eco-action log.
  * Persists to localStorage, recovers from corrupt JSON, seeds first-time
  * visitors with a few sample actions, and memoises derived totals.
  */
 export function useEcoState() {
-  const [actions, setActions] = useState<Action[]>([]);
-  const [hydrated, setHydrated] = useState(false);
+  // Lazy init keeps SSR safe (returns []) while the client gets seeded data
+  // synchronously on first render. A useLayoutEffect bridges SSR -> CSR before
+  // paint so users never see the empty "0.0 kg / 0 actions" flash.
+  const [actions, setActions] = useState<Action[]>(resolveInitial);
+  const [hydrated, setHydrated] = useState(typeof window !== "undefined");
 
-  useEffect(() => {
-    const existing = read().actions;
-    const alreadySeeded =
-      typeof window !== "undefined" && window.localStorage.getItem(SEEDED_KEY) === "1";
-    if (existing.length === 0 && !alreadySeeded) {
-      const now = Date.now();
-      const seeded: Action[] = SEED_ACTIONS.map((a, i) => ({
-        ...a,
-        id: `seed-${i}`,
-        loggedAt: now - (i + 1) * 3600_000,
-      }));
-      setActions(seeded);
-      try {
-        window.localStorage.setItem(SEEDED_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-    } else {
-      setActions(existing);
-    }
+  useLayoutEffect(() => {
+    if (hydrated) return;
+    setActions(resolveInitial());
     setHydrated(true);
-  }, []);
+  }, [hydrated]);
 
   useEffect(() => {
     if (hydrated) write({ actions });
