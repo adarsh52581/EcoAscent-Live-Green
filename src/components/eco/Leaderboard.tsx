@@ -1,21 +1,18 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { Trophy } from "lucide-react";
+import { NEIGHBORHOOD_GROUPS } from "@/lib/eco/leaderboard-data";
 
 type Props = { totalCO2: number };
 
-const GROUPS = [
-  { name: "Maple Hostel", score: 12 },
-  { name: "Oak Tower", score: 34 },
-  { name: "Cedar Hall", score: 56 },
-  { name: "Birch Court", score: 78 },
-  { name: "Pine Lodge", score: 102 },
-];
-
+/**
+ * Neighborhood leaderboard. Inserts the user's "Your House" row, sorts ascending
+ * by CO₂, and renders as a semantic table for screen readers.
+ */
 function LeaderboardImpl({ totalCO2 }: Props) {
-  const rows = [
-    ...GROUPS.map((g) => ({ ...g, you: false })),
+  const rows = useMemo(() => [
+    ...NEIGHBORHOOD_GROUPS.map((g) => ({ ...g, you: false })),
     { name: "Your House", score: Number(totalCO2.toFixed(1)), you: true },
-  ].sort((a, b) => a.score - b.score);
+  ].sort((a, b) => a.score - b.score), [totalCO2]);
 
   return (
     <div className="mx-auto w-[min(92vw,640px)] space-y-5 pb-32 pt-6">
