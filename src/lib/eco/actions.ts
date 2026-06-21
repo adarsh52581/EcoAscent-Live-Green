@@ -1,4 +1,16 @@
-import { Car, Plane, Bus, Train, Beef, Drumstick, Salad, Bike, Trees, Leaf, type LucideIcon } from "lucide-react";
+import {
+  Car,
+  Plane,
+  Bus,
+  Train,
+  Beef,
+  Drumstick,
+  Salad,
+  Bike,
+  Trees,
+  Leaf,
+  type LucideIcon,
+} from "lucide-react";
 
 export type Category = "transit" | "food" | "offset";
 
@@ -41,6 +53,14 @@ export const WORLD_THRESHOLDS = {
   /** Below this total the world is strained; at or above it becomes critical. */
   strained: 80,
 } as const;
+
+/**
+ * Named threshold constants — extracted out of inline magic numbers so UI,
+ * tests, and documentation reference one source of truth.
+ */
+export const PRISTINE_THRESHOLD_KG: number = WORLD_THRESHOLDS.pristine;
+export const MODERATE_THRESHOLD_KG: number = WORLD_THRESHOLDS.moderate;
+export const CRITICAL_THRESHOLD_KG: number = WORLD_THRESHOLDS.strained;
 
 export type WorldState = "pristine" | "moderate" | "strained" | "critical";
 
