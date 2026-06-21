@@ -1,6 +1,13 @@
-import { describe, beforeEach, describe as _d, it, expect } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useEcoState, formatRelative } from "./storage";
+import { describe, beforeEach, it, expect } from "vitest";
+import { render, renderHook, act } from "@testing-library/react";
+import {
+  INITIAL_ACTIONS,
+  formatRelative,
+  useActions,
+  useEcoState,
+  useWorldState,
+  type Action,
+} from "./storage";
 
 describe("useEcoState", () => {
   beforeEach(() => {
@@ -40,6 +47,44 @@ describe("useEcoState", () => {
     window.localStorage.setItem("ecoascent:v1", "{not json");
     const { result } = renderHook(() => useEcoState());
     expect(result.current.actions).toEqual([]);
+  });
+
+  it("first render output matches the SSR-safe INITIAL_ACTIONS (no hydration mismatch)", () => {
+    // Capture the value of `actions` from the very first render — before any
+    // effects have flushed — to lock in identical server/client output.
+    let firstRenderValue: ReadonlyArray<Action> | null = null;
+    function Probe() {
+      const { actions } = useEcoState();
+      if (firstRenderValue === null) firstRenderValue = actions;
+      return null;
+    }
+    render(<Probe />);
+    expect(firstRenderValue).toEqual(INITIAL_ACTIONS);
+  });
+});
+
+describe("useActions / useWorldState split", () => {
+  beforeEach(() => {
+    window.localStorage.setItem("ecoascent:seeded", "1");
+  });
+
+  it("useActions owns the log without computing totals", () => {
+    const { result } = renderHook(() => useActions());
+    expect("totalCO2" in result.current).toBe(false);
+    act(() =>
+      result.current.addAction({ category: "food", label: "Beef", co2: 7 }),
+    );
+    expect(result.current.actions).toHaveLength(1);
+  });
+
+  it("useWorldState derives totalCO2 / state / headline purely", () => {
+    const actions: Action[] = [
+      { id: "1", category: "transit", label: "Flight", co2: 90, loggedAt: 0 },
+    ];
+    const { result } = renderHook(() => useWorldState(actions));
+    expect(result.current.totalCO2).toBe(90);
+    expect(result.current.state).toBe("critical");
+    expect(result.current.headline.toLowerCase()).toMatch(/choking|act/);
   });
 });
 
