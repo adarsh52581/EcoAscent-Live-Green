@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { SCENE_PALETTES, type SceneKind } from "./palettes";
 import { TreeOrStump } from "./Trees";
 import { Smoke, Pollen } from "./Atmosphere";
