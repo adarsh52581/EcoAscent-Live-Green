@@ -37,4 +37,13 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    // shadcn-generated UI primitives intentionally co-export helper hooks /
+    // variants alongside the component. Disable react-refresh's only-export-
+    // components rule for that directory only.
+    files: ["src/components/ui/**/*.{ts,tsx}"],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 );
