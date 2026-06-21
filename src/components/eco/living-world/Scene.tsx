@@ -1,4 +1,5 @@
-import { SCENE_PALETTES, treeCount, type SceneKind } from "./palettes";
+import type * as React from "react";
+import { SCENE_PALETTES, type SceneKind } from "./palettes";
 import { TreeOrStump } from "./Trees";
 import { Smoke, Pollen } from "./Atmosphere";
 
@@ -9,7 +10,7 @@ type Props = {
 };
 
 /** A single Living World backdrop (sky, hills, trees, atmosphere). */
-export function Scene({ visible, kind, tx }: Props) {
+export function Scene({ visible, kind, tx }: Props): React.ReactElement {
   const p = SCENE_PALETTES[kind];
 
   return (
@@ -31,7 +32,7 @@ export function Scene({ visible, kind, tx }: Props) {
           height: 180,
           borderRadius: "9999px",
           background: `radial-gradient(circle, ${p.sun} 0%, ${p.sunGlow} 60%, transparent 75%)`,
-          filter: kind === "critical" ? "blur(2px)" : "blur(1px)",
+          filter: `blur(${p.sunBlurPx}px)`,
           ...tx(8),
         }}
       />
@@ -73,13 +74,13 @@ export function Scene({ visible, kind, tx }: Props) {
         className="absolute bottom-[10%] left-0 w-full flex justify-around items-end px-[6%]"
         style={tx(16)}
       >
-        {treeCount(kind).map((variant, i) => (
+        {p.trees.map((variant, i) => (
           <TreeOrStump key={i} variant={variant} trunk={p.trunk} leaf={p.leaf} />
         ))}
       </div>
 
-      {kind === "critical" && <Smoke />}
-      {kind === "pristine" && <Pollen />}
+      {p.atmosphere === "smoke" && <Smoke />}
+      {p.atmosphere === "pollen" && <Pollen />}
     </div>
   );
 }

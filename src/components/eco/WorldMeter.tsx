@@ -29,9 +29,7 @@ function WorldMeterImpl({ totalCO2, count }: Props) {
     <div className="mx-auto mt-6 w-[min(92vw,560px)] rounded-3xl border border-white/10 bg-black/40 p-5 text-white backdrop-blur-md shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]">
       <div className="flex items-baseline justify-between gap-3">
         <div>
-          <div className="text-[11px] uppercase tracking-[0.18em] text-white/60">
-            World Health
-          </div>
+          <div className="text-[11px] uppercase tracking-[0.18em] text-white/60">World Health</div>
           <div className="mt-1 text-lg font-medium leading-tight">{headline}</div>
         </div>
         <div className="text-right">

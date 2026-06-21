@@ -78,15 +78,26 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "EcoAscent — Watch your world react" },
-      { name: "description", content: "A gamified carbon footprint tracker where your daily transit, food, and offset choices reshape a Living World that visibly thrives, strains, or chokes." },
+      {
+        name: "description",
+        content:
+          "A gamified carbon footprint tracker where your daily transit, food, and offset choices reshape a Living World that visibly thrives, strains, or chokes.",
+      },
       { name: "author", content: "EcoAscent" },
       { property: "og:site_name", content: "EcoAscent" },
       { property: "og:title", content: "EcoAscent — Watch your world react" },
-      { property: "og:description", content: "Log your day. Watch your world breathe — or struggle. A gamified carbon footprint tracker built around emotional visual feedback." },
+      {
+        property: "og:description",
+        content:
+          "Log your day. Watch your world breathe — or struggle. A gamified carbon footprint tracker built around emotional visual feedback.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "EcoAscent — Watch your world react" },
-      { name: "twitter:description", content: "Log your day. Watch your world breathe — or struggle." },
+      {
+        name: "twitter:description",
+        content: "Log your day. Watch your world breathe — or struggle.",
+      },
     ],
     links: [
       {

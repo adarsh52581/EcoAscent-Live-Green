@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { CATEGORY_META } from "@/lib/eco/actions";
+import type * as React from "react";
 import { formatRelative, type Action } from "@/lib/eco/storage";
 
 type Props = {
@@ -8,17 +9,17 @@ type Props = {
 };
 
 /** Most-recent logged actions, with a per-row remove button. */
-export function RecentActions({ actions, onRemove }: Props) {
+export function RecentActions({ actions, onRemove }: Props): React.ReactElement {
   return (
     <section className="rounded-3xl border border-white/10 bg-black/40 p-5 text-white backdrop-blur-md">
       <div className="flex items-baseline justify-between">
         <h3 className="text-sm font-semibold uppercase tracking-wider text-white/70">
           Recent actions
         </h3>
-        <span className="text-xs text-white/40">{actions.length} total</span>
+        <span className="text-xs text-white/80">{actions.length} total</span>
       </div>
       {actions.length === 0 ? (
-        <p className="mt-4 text-sm text-white/50">
+        <p className="mt-4 text-sm text-white/80">
           Nothing logged yet. Your world is waiting for its first story.
         </p>
       ) : (
@@ -29,15 +30,13 @@ export function RecentActions({ actions, onRemove }: Props) {
               <li key={a.id} className="flex items-center gap-3 py-3">
                 <div className="flex-1">
                   <div className="text-sm font-medium">{a.label}</div>
-                  <div className="text-[11px] uppercase tracking-wider text-white/40">
+                  <div className="text-[11px] uppercase tracking-wider text-white/75">
                     {CATEGORY_META[a.category].label} · {formatRelative(a.loggedAt)}
                   </div>
                 </div>
                 <span
                   className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                    positive
-                      ? "bg-[#F2705B]/15 text-[#F2A07B]"
-                      : "bg-[#7CE0A8]/15 text-[#7CE0A8]"
+                    positive ? "bg-[#F2705B]/15 text-[#F2A07B]" : "bg-[#7CE0A8]/15 text-[#7CE0A8]"
                   }`}
                 >
                   {positive ? "+" : ""}
@@ -46,7 +45,7 @@ export function RecentActions({ actions, onRemove }: Props) {
                 <button
                   onClick={() => onRemove(a.id)}
                   aria-label="Remove action"
-                  className="rounded-full p-2 text-white/40 transition hover:bg-white/5 hover:text-white"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>

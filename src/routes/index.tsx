@@ -45,9 +45,7 @@ function Index() {
         </div>
       )}
 
-      {view === "log" && (
-        <ActionLog actions={actions} onAdd={addAction} onRemove={removeAction} />
-      )}
+      {view === "log" && <ActionLog actions={actions} onAdd={addAction} onRemove={removeAction} />}
 
       {view === "board" && <Leaderboard totalCO2={totalCO2} />}
 
