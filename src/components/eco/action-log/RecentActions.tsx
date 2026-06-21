@@ -36,9 +36,7 @@ export function RecentActions({ actions, onRemove }: Props): React.ReactElement 
                 </div>
                 <span
                   className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
-                    positive
-                      ? "bg-[#F2705B]/15 text-[#F2A07B]"
-                      : "bg-[#7CE0A8]/15 text-[#7CE0A8]"
+                    positive ? "bg-[#F2705B]/15 text-[#F2A07B]" : "bg-[#7CE0A8]/15 text-[#7CE0A8]"
                   }`}
                 >
                   {positive ? "+" : ""}

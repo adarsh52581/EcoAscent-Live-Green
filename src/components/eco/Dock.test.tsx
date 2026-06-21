@@ -12,13 +12,8 @@ describe("<Dock />", () => {
 
   it("marks the active button with aria-current", () => {
     render(<Dock view="log" onChange={() => {}} />);
-    expect(screen.getByRole("button", { name: /log/i })).toHaveAttribute(
-      "aria-current",
-      "page",
-    );
-    expect(screen.getByRole("button", { name: /world/i })).not.toHaveAttribute(
-      "aria-current",
-    );
+    expect(screen.getByRole("button", { name: /log/i })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("button", { name: /world/i })).not.toHaveAttribute("aria-current");
   });
 
   it("calls onChange when a different view is clicked", () => {

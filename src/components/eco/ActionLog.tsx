@@ -50,9 +50,7 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
   return (
     <div className="mx-auto w-[min(92vw,640px)] space-y-5 pb-32 pt-6">
       <header className="rounded-3xl border border-white/10 bg-black/40 p-6 text-white backdrop-blur-md">
-        <div className="text-[11px] uppercase tracking-[0.18em] text-white/60">
-          Log an action
-        </div>
+        <div className="text-[11px] uppercase tracking-[0.18em] text-white/60">Log an action</div>
         <h2 className="mt-1 text-2xl font-semibold">What did your day look like?</h2>
         <p className="mt-1 text-sm text-white/60">
           Small honest steps shape a world you can be proud of.
@@ -69,10 +67,7 @@ export function ActionLog({ actions, onAdd, onRemove }: Props) {
 
         {/* Custom label */}
         <div className="mt-4">
-          <label
-            htmlFor={noteId}
-            className="text-[11px] uppercase tracking-wider text-white/50"
-          >
+          <label htmlFor={noteId} className="text-[11px] uppercase tracking-wider text-white/50">
             Custom note (optional)
           </label>
           <input

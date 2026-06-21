@@ -11,8 +11,8 @@ describe("<Scene />", () => {
     // palette's `atmosphere` flag below would not change the rendered tree.
     const { container } = render(<Scene visible kind="pristine" tx={tx} />);
     // Pollen pieces are absolutely-positioned divs with the pollen background.
-    const pollen = Array.from(container.querySelectorAll("div")).filter((d) =>
-      d.style.background?.includes("FFF6C8") || d.className.includes("bg-[#FFF6C8]"),
+    const pollen = Array.from(container.querySelectorAll("div")).filter(
+      (d) => d.style.background?.includes("FFF6C8") || d.className.includes("bg-[#FFF6C8]"),
     );
     expect(pollen.length).toBeGreaterThan(0);
   });

@@ -9,10 +9,14 @@ type Props = { totalCO2: number };
  * by CO₂, and renders as a semantic table for screen readers.
  */
 function LeaderboardImpl({ totalCO2 }: Props) {
-  const rows = useMemo(() => [
-    ...NEIGHBORHOOD_GROUPS.map((g) => ({ ...g, you: false })),
-    { name: "Your House", score: Number(totalCO2.toFixed(1)), you: true },
-  ].sort((a, b) => a.score - b.score), [totalCO2]);
+  const rows = useMemo(
+    () =>
+      [
+        ...NEIGHBORHOOD_GROUPS.map((g) => ({ ...g, you: false })),
+        { name: "Your House", score: Number(totalCO2.toFixed(1)), you: true },
+      ].sort((a, b) => a.score - b.score),
+    [totalCO2],
+  );
 
   return (
     <div className="mx-auto w-[min(92vw,640px)] space-y-5 pb-32 pt-6">
@@ -70,12 +74,8 @@ function LeaderboardImpl({ totalCO2 }: Props) {
                 </div>
               </td>
               <td className="rounded-r-2xl border-y border-r border-white/10 p-4 text-right">
-                <div className="text-lg font-semibold tabular-nums">
-                  {r.score.toFixed(1)}
-                </div>
-                <div className="text-[10px] uppercase tracking-wider text-white/40">
-                  kg CO₂
-                </div>
+                <div className="text-lg font-semibold tabular-nums">{r.score.toFixed(1)}</div>
+                <div className="text-[10px] uppercase tracking-wider text-white/40">kg CO₂</div>
               </td>
             </tr>
           ))}

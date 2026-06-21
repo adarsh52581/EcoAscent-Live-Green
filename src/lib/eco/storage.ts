@@ -108,19 +108,16 @@ export function useActions(): {
     if (hydrated) write({ actions });
   }, [actions, hydrated]);
 
-  const addAction = useCallback(
-    (a: Omit<Action, "id" | "loggedAt">) => {
-      setActions((prev) => [
-        {
-          ...a,
-          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-          loggedAt: Date.now(),
-        },
-        ...prev,
-      ]);
-    },
-    [],
-  );
+  const addAction = useCallback((a: Omit<Action, "id" | "loggedAt">) => {
+    setActions((prev) => [
+      {
+        ...a,
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        loggedAt: Date.now(),
+      },
+      ...prev,
+    ]);
+  }, []);
 
   const removeAction = useCallback((id: string) => {
     setActions((prev) => prev.filter((a) => a.id !== id));

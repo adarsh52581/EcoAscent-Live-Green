@@ -13,10 +13,7 @@ const ITEMS: { id: View; label: string; Icon: typeof Home }[] = [
 /** Floating bottom navigation dock that switches between the three main views. */
 export function Dock({ view, onChange }: Props) {
   return (
-    <nav
-      aria-label="Primary"
-      className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2"
-    >
+    <nav aria-label="Primary" className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2">
       <div className="flex items-center gap-1 rounded-full border border-white/15 bg-black/40 p-1.5 backdrop-blur-md shadow-[0_10px_40px_-10px_rgba(0,0,0,0.6)]">
         {ITEMS.map(({ id, label, Icon }) => {
           const active = view === id;
@@ -25,9 +22,7 @@ export function Dock({ view, onChange }: Props) {
               key={id}
               onClick={() => onChange(id)}
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium transition ${
-                active
-                  ? "bg-[#E8F4FF] text-[#0F1A24]"
-                  : "text-white/80 hover:text-white"
+                active ? "bg-[#E8F4FF] text-[#0F1A24]" : "text-white/80 hover:text-white"
               }`}
               aria-current={active ? "page" : undefined}
             >

@@ -17,9 +17,7 @@ export function CategoryTabs({ value, onChange }: Props) {
             type="button"
             aria-pressed={value === c}
             className={`flex-1 rounded-full px-3 py-2 text-xs font-medium transition ${
-              value === c
-                ? "bg-[#E8F4FF] text-[#0F1A24]"
-                : "text-white/70 hover:text-white"
+              value === c ? "bg-[#E8F4FF] text-[#0F1A24]" : "text-white/70 hover:text-white"
             }`}
           >
             {CATEGORY_META[c].label}

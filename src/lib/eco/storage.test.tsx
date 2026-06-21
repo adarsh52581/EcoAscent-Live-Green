@@ -71,9 +71,7 @@ describe("useActions / useWorldState split", () => {
   it("useActions owns the log without computing totals", () => {
     const { result } = renderHook(() => useActions());
     expect("totalCO2" in result.current).toBe(false);
-    act(() =>
-      result.current.addAction({ category: "food", label: "Beef", co2: 7 }),
-    );
+    act(() => result.current.addAction({ category: "food", label: "Beef", co2: 7 }));
     expect(result.current.actions).toHaveLength(1);
   });
 

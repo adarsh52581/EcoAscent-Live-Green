@@ -27,9 +27,7 @@ describe("<PresetGrid />", () => {
   });
 
   it("gracefully renders an empty preset list", () => {
-    const { container } = render(
-      <PresetGrid presets={[]} selectedId={null} onSelect={() => {}} />,
-    );
+    const { container } = render(<PresetGrid presets={[]} selectedId={null} onSelect={() => {}} />);
     expect(container.querySelectorAll("button").length).toBe(0);
   });
 });
