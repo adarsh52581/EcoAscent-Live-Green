@@ -1,3 +1,4 @@
+import type * as React from "react";
 import { useEffect, useId, useRef, useState } from "react";
 import { worldState, type WorldState } from "@/lib/eco/actions";
 import { Scene } from "./living-world/Scene";
