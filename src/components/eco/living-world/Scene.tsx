@@ -9,7 +9,7 @@ type Props = {
 };
 
 /** A single Living World backdrop (sky, hills, trees, atmosphere). */
-export function Scene({ visible, kind, tx }: Props): JSX.Element {
+export function Scene({ visible, kind, tx }: Props): React.ReactElement {
   const p = SCENE_PALETTES[kind];
 
   return (
