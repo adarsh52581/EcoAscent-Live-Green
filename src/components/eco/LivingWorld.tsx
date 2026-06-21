@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { worldState, type WorldState } from "@/lib/eco/actions";
 import { Scene } from "./living-world/Scene";
 
@@ -16,7 +16,7 @@ const SCENE_DESCRIPTIONS: Record<WorldState, string> = {
  * Renders three scene variants (pristine / moderate+strained / critical) and
  * cross-fades between them. Includes an SR-only SVG with title/desc.
  */
-export function LivingWorld({ totalCO2 }: Props) {
+export function LivingWorld({ totalCO2 }: Props): React.ReactElement {
   const state = worldState(totalCO2);
   const ref = useRef<HTMLDivElement>(null);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
@@ -38,8 +38,9 @@ export function LivingWorld({ totalCO2 }: Props) {
     transform: `translate3d(${parallax.x * depth}px, ${parallax.y * depth * 0.5}px, 0)`,
   });
 
-  const titleId = "living-world-title";
-  const descId = "living-world-desc";
+  const rid = useId();
+  const titleId = `${rid}-title`;
+  const descId = `${rid}-desc`;
   return (
     <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden">
       {/* Accessible SVG layer: invisible but exposes <title>/<desc> to AT. */}
